@@ -15,6 +15,7 @@ func main() {
 	e := echo.New()
 	e.Logger.SetLevel(log.ERROR)
 	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	// Setting up Database connection
 	options := db.ConnectionOptions{
@@ -29,13 +30,14 @@ func main() {
 	requestHandler := handlers.Context{DB: db.GetConnection(options)}
 
 	// Router
-	e.GET("/status.json", func(c echo.Context) error {
+	e.GET("/status", func(c echo.Context) error {
 		hash := map[string]interface{}{
 			"status": "success",
 		}
 		return c.JSON(http.StatusOK, hash)
 	})
-	e.GET("/transactions.json", requestHandler.ListTransactions)
+	e.GET("/transactions", requestHandler.ListTransactions)
+	e.GET("/transactions/:id", requestHandler.GetTransaction)
 
 	// Ensure DB connection is closed
 	defer requestHandler.DB.Close()

@@ -13,3 +13,10 @@ func (hc Context) ListTransactions(c echo.Context) error {
 
 	return c.JSONPretty(http.StatusOK, res, "  ")
 }
+
+func (hc Context) GetTransaction(c echo.Context) error {
+	transaction := repositories.GetTransaction(hc.DB, c.Param("id"))
+	res := echo.Map{"transaction": transaction}
+
+	return c.JSONPretty(http.StatusOK, res, "  ")
+}

@@ -6,9 +6,17 @@ import (
 )
 
 func GetTransactions(conn *gorm.DB) models.Transactions {
-	transactions := models.Transactions{}
+	var transactions models.Transactions
 
 	conn.Find(&transactions)
 
 	return transactions
+}
+
+func GetTransaction(conn *gorm.DB, transactionID string) models.Transaction {
+	var transaction models.Transaction
+
+	conn.First(&transaction, transactionID)
+
+	return transaction
 }
