@@ -31,6 +31,7 @@ func main() {
 	conn.LogMode(true)
 
 	requestHandler := handlers.Context{DB: conn}
+	requestHandler.RunMigrations()
 
 	// Router
 	e.GET("/status", func(c echo.Context) error {
