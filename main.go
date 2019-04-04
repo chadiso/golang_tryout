@@ -27,7 +27,10 @@ func main() {
 		DatabaseParams: "charset=utf8&parseTime=True&loc=Local",
 	}
 
-	requestHandler := handlers.Context{DB: db.GetConnection(options)}
+	conn := db.GetConnection(options)
+	conn.LogMode(true)
+
+	requestHandler := handlers.Context{DB: conn}
 
 	// Router
 	e.GET("/status", func(c echo.Context) error {
